@@ -1,0 +1,133 @@
+Oui, Pierre. Je te ferais un petit README très pratique, centré sur **votre configuration actuelle**, pour que dans trois jours tu n’aies pas à te demander comment on avait contourné Live Server.
+
+````markdown
+# Lancement local du FrontEnd sans Live Server
+
+Ce projet peut être lancé sans l'extension **Live Server** de VS Code.
+
+Le FrontEnd est servi localement avec le paquet `serve` exécuté via `npx`.
+
+## Prérequis
+
+Node.js et npm doivent être disponibles dans la console.
+
+Vérification :
+
+```cmd
+node --version
+npm --version
+````
+
+## 1. Lancer le Backend
+
+Ouvrir une première console et se placer dans le dossier `Backend` :
+
+```cmd
+cd "C:\Users\DENIS\Documents\Git\Projet\Portfolio-architecte-sophie-bluel\Backend"
+```
+
+Lancer le serveur :
+
+```cmd
+npm start
+```
+
+Le terminal doit notamment afficher :
+
+```text
+Listening on port 5678
+db is ready
+```
+
+Le Backend est alors disponible sur :
+
+```text
+http://localhost:5678
+```
+
+La documentation Swagger est accessible sur :
+
+```text
+http://localhost:5678/api-docs/
+```
+
+**Laisser cette console ouverte pendant le développement.**
+
+## 2. Lancer le FrontEnd
+
+Ouvrir une deuxième console et se placer dans le dossier `FrontEnd` :
+
+```cmd
+cd "C:\Users\DENIS\Documents\Git\Projet\Portfolio-architecte-sophie-bluel\FrontEnd"
+```
+
+Lancer le serveur local :
+
+```cmd
+npx serve .
+```
+
+Lors du premier lancement, `npx` peut proposer d'installer le paquet `serve`.
+Accepter l'installation si nécessaire.
+
+Le terminal indique ensuite l'adresse du serveur, par exemple :
+
+```text
+http://localhost:3000
+```
+
+Ouvrir cette adresse dans le navigateur.
+
+**Laisser également cette console ouverte pendant le développement.**
+
+## Configuration obtenue
+
+Deux serveurs fonctionnent simultanément :
+
+```text
+Backend
+    http://localhost:5678
+            ↑
+            │ fetch()
+            │
+FrontEnd
+    http://localhost:3000
+```
+
+Le JavaScript du FrontEnd peut ainsi appeler l'API :
+
+```javascript
+const reponse = await fetch("http://localhost:5678/api/works");
+const travaux = await reponse.json();
+```
+
+## Arrêter les serveurs
+
+Dans chacune des consoles :
+
+```text
+Ctrl + C
+```
+
+## Important
+
+Ne pas ouvrir directement `index.html` depuis l'Explorateur Windows.
+
+Une adresse commençant par :
+
+```text
+file:///C:/...
+```
+
+signifie que le FrontEnd n'est pas servi par un serveur HTTP et peut provoquer des problèmes avec JavaScript et les appels à l'API.
+
+Il faut ouvrir le site avec l'adresse fournie par `npx serve .`, par exemple :
+
+```text
+http://localhost:3000
+```
+
+```
+
+Je l'appellerais simplement **`README.md` dans `FrontEnd`**, éventuellement en remplaçant le README très succinct qui s'y trouve si c'est bien celui que tu veux documenter.
+```
