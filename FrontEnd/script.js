@@ -1,3 +1,35 @@
+// Gestion de l'authentification
+const authLink = document.querySelector("#auth-link");
+const editModeBar = document.querySelector("#edit-mode-bar");
+const boutonModifier = document.querySelector(".bouton-modifier");
+const menuCategories = document.querySelector(".menu-categories");
+
+const token = localStorage.getItem("token");
+if (token) {
+  authLink.innerText = "logout";
+  authLink.href = "#";
+
+  editModeBar.classList.remove("hidden");
+  boutonModifier.classList.remove("hidden");
+  menuCategories.classList.add("hidden");
+
+  authLink.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    localStorage.removeItem("token");
+
+    window.location.href = "index.html";
+  });
+} else {
+  authLink.innerText = "login";
+  authLink.href = "login.html";
+
+  editModeBar.classList.add("hidden");
+  boutonModifier.classList.add("hidden");
+  menuCategories.classList.remove("hidden");
+}
+
+
 // Récupération des projets depuis l'API works
 const reponse = await fetch("http://localhost:5678/api/works");
 let travaux = await reponse.json();
@@ -30,8 +62,6 @@ const reponseCategories = await fetch(
 );
 
 const categories = await reponseCategories.json();
-
-const menuCategories = document.querySelector(".menu-categories");
 
 const boutonTous = document.createElement("button");
 
@@ -128,8 +158,7 @@ function genererTravauxModal(listeTravaux) {
         const id =
           event.currentTarget.dataset.id;
 
-        const token =
-          localStorage.getItem("token");
+
 
         const reponseSuppression =
           await fetch(
@@ -254,8 +283,6 @@ function addWorks() {
     formData.append("image", image);
     formData.append("title", titre);
     formData.append("category", categorie);
-
-    const token = localStorage.getItem("token");
 
     const reponseAdd = await fetch(
       "http://localhost:5678/api/works",
