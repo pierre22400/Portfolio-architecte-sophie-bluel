@@ -201,6 +201,15 @@ function genererTravauxModal(listeTravaux) {
 const selectCategorie = document.querySelector("#category");
 
 selectCategorie.innerHTML = "";
+const optionVide =
+  document.createElement("option");
+
+optionVide.value = "";
+optionVide.textContent = "";
+optionVide.selected = true;
+optionVide.disabled = true;
+
+selectCategorie.appendChild(optionVide);
 for (let i = 0; i < categories.length; i++) {
   const optionCategorie = document.createElement("option");
   optionCategorie.value = categories[i].id;
