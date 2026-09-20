@@ -99,35 +99,59 @@
         <button id="close-modal" type="button" aria-label="Fermer">
           ×
         </button>
+
         <div id="modal-gallery-view" class="modal-view">
-          <h2> Galerie photo </h2>
+          <h2>Galerie photo</h2>
+
           <div class="gallery-modal"></div>
-          <button id="add-photo" type="button"> Ajouter une photo </button>
+
+          <button id="add-photo" type="button">
+            Ajouter une photo
+          </button>
         </div>
+
         <div id="modal-add-view" class="modal-view hidden">
           <button id="back-gallery" type="button" aria-label="Retour à la galerie">
             ←
           </button>
-          <h2> Ajout photo </h2>
 
+          <h2>Ajout photo</h2>
 
           <form id="add-work-form">
             <div class="photo-upload">
-              <i class="fa-regular fa-image"></i>
-              <label for="image" class="photo-upload-button">
-                + Ajouter photo
-              </label>
-              <p> jpg, png : 4mo max </p>
+              <img id="image-preview" class="image-preview hidden" alt="Prévisualisation de la photo">
+
+              <div id="upload-placeholder">
+                <i class="fa-regular fa-image"></i>
+
+                <label for="image" class="photo-upload-button">
+                  + Ajouter photo
+                </label>
+
+                <p>jpg, png : 4mo max</p>
+              </div>
 
               <input type="file" name="image" id="image" accept="image/png, image/jpeg">
             </div>
-            <label for="title"> Titre </label>
+
+            <label for="title">
+              Titre
+            </label>
+
             <input type="text" name="title" id="title">
-            <label for="category"> Catégorie </label>
+
+            <label for="category">
+              Catégorie
+            </label>
+
             <select name="category" id="category">
             </select>
+
             <p id="add-work-error"></p>
-            <button id="validate-work" type="submit"> Valider </button>
+
+            <button id="validate-work" type="submit">
+              Valider
+            </button>
           </form>
         </div>
       </div>

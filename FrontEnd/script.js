@@ -264,6 +264,30 @@ function addWorks() {
   const addWorkForm = document.querySelector("#add-work-form");
   const addTitle = document.querySelector("#title");
   const addImage = document.querySelector("#image");
+  const imagePreview =
+    document.querySelector("#image-preview");
+
+  const uploadPlaceholder =
+    document.querySelector("#upload-placeholder");
+  addImage.addEventListener("change", function () {
+    const image = addImage.files[0];
+
+    if (!image) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+      imagePreview.src = reader.result;
+
+      imagePreview.classList.remove("hidden");
+      uploadPlaceholder.classList.add("hidden");
+    });
+
+    reader.readAsDataURL(image);
+  });
+
   const addCategory = document.querySelector("#category");
 
   addWorkForm.addEventListener("submit", async function (event) {
@@ -309,7 +333,9 @@ function addWorks() {
       genererTravauxModal(travaux);
 
       addWorkForm.reset();
-
+      imagePreview.src = "";
+      imagePreview.classList.add("hidden");
+      uploadPlaceholder.classList.remove("hidden");
       alert("Votre ajout a bien été pris en compte.");
     }
   });
