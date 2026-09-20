@@ -261,38 +261,50 @@ boutonBack.addEventListener("click", function () {
 
 
 function addWorks() {
-  const addWorkForm = document.querySelector("#add-work-form");
-  const addTitle = document.querySelector("#title");
-  const addImage = document.querySelector("#image");
-  const imagePreview = document.querySelector("#image-preview");
-  const uploadPlaceholder = document.querySelector("#upload-placeholder");
+  const addWorkForm =
+    document.querySelector("#add-work-form");
+
+  const addTitle =
+    document.querySelector("#title");
+
+  const addImage =
+    document.querySelector("#image");
+
+  const addCategory =
+    document.querySelector("#category");
 
   const validateButton =
-  document.querySelector("#validate-work");
+    document.querySelector("#validate-work");
 
-function verifierFormulaire() {
-  const titre = addTitle.value.trim();
-  const image = addImage.files[0];
-  const categorie = addCategory.value;
+  const imagePreview =
+    document.querySelector("#image-preview");
 
-  if (titre && image && categorie) {
-    validateButton.disabled = false;
-  } else {
-    validateButton.disabled = true;
+  const uploadPlaceholder =
+    document.querySelector("#upload-placeholder");
+
+  function verifierFormulaire() {
+    const titre = addTitle.value.trim();
+    const image = addImage.files[0];
+    const categorie = addCategory.value;
+
+    if (titre && image && categorie) {
+      validateButton.disabled = false;
+    } else {
+      validateButton.disabled = true;
+    }
   }
-}
-addTitle.addEventListener(
-  "input",
-  verifierFormulaire
-);
-addImage.addEventListener(
-  "change",
-  verifierFormulaire
-);
-addCategory.addEventListener(
-  "change",
-  verifierFormulaire
-);
+  addTitle.addEventListener(
+    "input",
+    verifierFormulaire
+  );
+  addImage.addEventListener(
+    "change",
+    verifierFormulaire
+  );
+  addCategory.addEventListener(
+    "change",
+    verifierFormulaire
+  );
 
   addImage.addEventListener("change", function () {
     const image = addImage.files[0];
@@ -313,8 +325,7 @@ addCategory.addEventListener(
     reader.readAsDataURL(image);
   });
 
-  const addCategory = document.querySelector("#category");
-
+ 
   addWorkForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
