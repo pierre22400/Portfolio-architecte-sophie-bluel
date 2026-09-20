@@ -390,6 +390,13 @@ footer nav ul {
 	border-radius: 60px;
 }
 
+
+.categorie-button-selected {
+  background-color: #1D6154;
+  color: white;
+}
+
+
 /* modal */
 
 .modal {

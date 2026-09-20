@@ -36,11 +36,31 @@ const menuCategories = document.querySelector(".menu-categories");
 const boutonTous = document.createElement("button");
 
 boutonTous.innerText = "Tous";
-boutonTous.classList.add("categorie-button");
+boutonTous.classList.add(
+  "categorie-button",
+  "categorie-button-selected"
+);
 
 menuCategories.appendChild(boutonTous);
 
+function selectionnerCategorie(boutonSelectionne) {
+  const boutonsCategories =
+    document.querySelectorAll(".categorie-button");
+
+  for (let i = 0; i < boutonsCategories.length; i++) {
+    boutonsCategories[i].classList.remove(
+      "categorie-button-selected"
+    );
+  }
+
+  boutonSelectionne.classList.add(
+    "categorie-button-selected"
+  );
+}
+
 boutonTous.addEventListener("click", function () {
+  selectionnerCategorie(boutonTous);
+
   mesProjets.innerHTML = "";
   genererTravaux(travaux);
 });
@@ -56,6 +76,7 @@ function genererCategories(categories) {
     menuCategories.appendChild(boutonCategorie);
 
     boutonCategorie.addEventListener("click", function () {
+      selectionnerCategorie(this);
       const categoryId = Number(this.getAttribute("data-category-id"));
 
       const travauxFiltres = travaux.filter(function (travail) {
@@ -149,14 +170,14 @@ function genererTravauxModal(listeTravaux) {
 
 // ajout des catégories dans la fenêtre modale
 const selectCategorie = document.querySelector("#category");
-  
-    selectCategorie.innerHTML = "";
-    for (let i = 0; i < categories.length; i++) {
-      const optionCategorie = document.createElement("option"); 
-      optionCategorie.value = categories[i].id;
-      optionCategorie.textContent = categories[i].name;
-      selectCategorie.appendChild(optionCategorie);
-    } 
+
+selectCategorie.innerHTML = "";
+for (let i = 0; i < categories.length; i++) {
+  const optionCategorie = document.createElement("option");
+  optionCategorie.value = categories[i].id;
+  optionCategorie.textContent = categories[i].name;
+  selectCategorie.appendChild(optionCategorie);
+}
 
 
 
@@ -247,23 +268,23 @@ function addWorks() {
       }
     );
 
-if (reponseAdd.ok) {
-  const nouveauTravail = await reponseAdd.json();
+    if (reponseAdd.ok) {
+      const nouveauTravail = await reponseAdd.json();
 
-  travaux.push(nouveauTravail);
+      travaux.push(nouveauTravail);
 
-  mesProjets.innerHTML = "";
-  genererTravaux(travaux);
+      mesProjets.innerHTML = "";
+      genererTravaux(travaux);
 
-  const galleryModal = document.querySelector(".gallery-modal");
+      const galleryModal = document.querySelector(".gallery-modal");
 
-  galleryModal.innerHTML = "";
-  genererTravauxModal(travaux);
+      galleryModal.innerHTML = "";
+      genererTravauxModal(travaux);
 
-  addWorkForm.reset();
+      addWorkForm.reset();
 
-  alert("Votre ajout a bien été pris en compte.");
-}
+      alert("Votre ajout a bien été pris en compte.");
+    }
   });
 }
 
