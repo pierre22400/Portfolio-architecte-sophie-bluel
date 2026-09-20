@@ -360,18 +360,31 @@ function addWorks() {
 
       travaux.push(nouveauTravail);
 
+      // Mise à jour de la galerie principale
       mesProjets.innerHTML = "";
       genererTravaux(travaux);
 
-      const galleryModal = document.querySelector(".gallery-modal");
+      // Mise à jour de la galerie dans la modale
+      const galleryModal =
+        document.querySelector(".gallery-modal");
 
       galleryModal.innerHTML = "";
       genererTravauxModal(travaux);
 
+      // Réinitialisation du formulaire
       addWorkForm.reset();
+
       imagePreview.src = "";
       imagePreview.classList.add("hidden");
       uploadPlaceholder.classList.remove("hidden");
+
+      // Le bouton Valider redevient désactivé et gris
+      verifierFormulaire();
+
+      // Retour à l'accueil de la modale
+      addView.classList.add("hidden");
+      galleryView.classList.remove("hidden");
+
       alert("Votre ajout a bien été pris en compte.");
     }
   });
