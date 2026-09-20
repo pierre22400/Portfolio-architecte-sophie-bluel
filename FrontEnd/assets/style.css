@@ -651,13 +651,18 @@ footer nav ul {
   border: none;
   border-radius: 60px;
 
-  background-color: #A7A7A7;
   color: white;
 
   font-family: 'Syne';
   font-size: 14px;
   font-weight: 700;
-
+}
+#validate-work:disabled {
+  background-color: #A7A7A7;
+  cursor: not-allowed;
+}
+#validate-work:not(:disabled) {
+  background-color: #1D6154;
   cursor: pointer;
 }
 
