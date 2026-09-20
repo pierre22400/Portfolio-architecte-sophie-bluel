@@ -305,7 +305,7 @@ function addWorks() {
     "change",
     verifierFormulaire
   );
-
+  verifierFormulaire();
   addImage.addEventListener("change", function () {
     const image = addImage.files[0];
 
@@ -325,7 +325,7 @@ function addWorks() {
     reader.readAsDataURL(image);
   });
 
- 
+
   addWorkForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
