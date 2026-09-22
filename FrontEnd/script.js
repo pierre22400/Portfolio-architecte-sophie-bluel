@@ -29,7 +29,6 @@ if (token) {
   menuCategories.classList.remove("hidden");
 }
 
-
 // Récupération des projets depuis l'API works
 const reponse = await fetch("http://localhost:5678/api/works");
 let travaux = await reponse.json();
@@ -55,37 +54,26 @@ function genererTravaux(travaux) {
 
 genererTravaux(travaux);
 
-
 // Récupération des catégories depuis l'API categories
-const reponseCategories = await fetch(
-  "http://localhost:5678/api/categories"
-);
+const reponseCategories = await fetch("http://localhost:5678/api/categories");
 
 const categories = await reponseCategories.json();
 
 const boutonTous = document.createElement("button");
 
 boutonTous.innerText = "Tous";
-boutonTous.classList.add(
-  "categorie-button",
-  "categorie-button-selected"
-);
+boutonTous.classList.add("categorie-button", "categorie-button-selected");
 
 menuCategories.appendChild(boutonTous);
 
 function selectionnerCategorie(boutonSelectionne) {
-  const boutonsCategories =
-    document.querySelectorAll(".categorie-button");
+  const boutonsCategories = document.querySelectorAll(".categorie-button");
 
   for (let i = 0; i < boutonsCategories.length; i++) {
-    boutonsCategories[i].classList.remove(
-      "categorie-button-selected"
-    );
+    boutonsCategories[i].classList.remove("categorie-button-selected");
   }
 
-  boutonSelectionne.classList.add(
-    "categorie-button-selected"
-  );
+  boutonSelectionne.classList.add("categorie-button-selected");
 }
 
 boutonTous.addEventListener("click", function () {
@@ -121,11 +109,7 @@ function genererCategories(categories) {
 
 genererCategories(categories);
 
-
-
-
 // Fenêtre modale
-
 
 const openModalButton = document.querySelector("#open-modal");
 const modal = document.querySelector("#modal");
@@ -146,54 +130,38 @@ function genererTravauxModal(listeTravaux) {
     boutonSupprimer.dataset.id = listeTravaux[i].id;
 
     const iconePoubelle = document.createElement("i");
-    iconePoubelle.classList.add(
-      "fa-solid",
-      "fa-trash-can"
-    );
+    iconePoubelle.classList.add("fa-solid", "fa-trash-can");
 
     boutonSupprimer.appendChild(iconePoubelle);
-    boutonSupprimer.addEventListener(
-      "click",
-      async function (event) {
-        const id =
-          event.currentTarget.dataset.id;
+    boutonSupprimer.addEventListener("click", async function (event) {
+      const id = event.currentTarget.dataset.id;
 
+      const reponseSuppression = await fetch(
+        `http://localhost:5678/api/works/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
+      if (reponseSuppression.ok) {
+        figureProjet.remove();
 
-        const reponseSuppression =
-          await fetch(
-            `http://localhost:5678/api/works/${id}`,
-            {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            }
-          );
+        travaux = travaux.filter(function (travail) {
+          return travail.id !== Number(id);
+        });
 
-        if (reponseSuppression.ok) {
-          figureProjet.remove();
-
-          travaux = travaux.filter(
-            function (travail) {
-              return travail.id !== Number(id);
-            }
-          );
-
-          mesProjets.innerHTML = "";
-          genererTravaux(travaux);
-        }
+        mesProjets.innerHTML = "";
+        genererTravaux(travaux);
       }
-    );
+    });
 
     figureProjet.appendChild(imageProjet);
-    figureProjet.appendChild(
-      boutonSupprimer
-    );
+    figureProjet.appendChild(boutonSupprimer);
 
-    galleryModal.appendChild(
-      figureProjet
-    );
+    galleryModal.appendChild(figureProjet);
   }
 }
 
@@ -201,8 +169,7 @@ function genererTravauxModal(listeTravaux) {
 const selectCategorie = document.querySelector("#category");
 
 selectCategorie.innerHTML = "";
-const optionVide =
-  document.createElement("option");
+const optionVide = document.createElement("option");
 
 optionVide.value = "";
 optionVide.textContent = "";
@@ -216,8 +183,6 @@ for (let i = 0; i < categories.length; i++) {
   optionCategorie.textContent = categories[i].name;
   selectCategorie.appendChild(optionCategorie);
 }
-
-
 
 function openModal() {
   modal.classList.add("active");
@@ -250,10 +215,6 @@ window.addEventListener("keydown", function (event) {
   }
 });
 
-
-
-
-
 const galleryView = document.querySelector("#modal-gallery-view");
 const addView = document.querySelector("#modal-add-view");
 const boutonAjouter = document.querySelector("#add-photo");
@@ -267,29 +228,20 @@ boutonBack.addEventListener("click", function () {
   galleryView.classList.remove("hidden");
 });
 
-
-
 function addWorks() {
-  const addWorkForm =
-    document.querySelector("#add-work-form");
+  const addWorkForm = document.querySelector("#add-work-form");
 
-  const addTitle =
-    document.querySelector("#title");
+  const addTitle = document.querySelector("#title");
 
-  const addImage =
-    document.querySelector("#image");
+  const addImage = document.querySelector("#image");
 
-  const addCategory =
-    document.querySelector("#category");
+  const addCategory = document.querySelector("#category");
 
-  const validateButton =
-    document.querySelector("#validate-work");
+  const validateButton = document.querySelector("#validate-work");
 
-  const imagePreview =
-    document.querySelector("#image-preview");
+  const imagePreview = document.querySelector("#image-preview");
 
-  const uploadPlaceholder =
-    document.querySelector("#upload-placeholder");
+  const uploadPlaceholder = document.querySelector("#upload-placeholder");
 
   function verifierFormulaire() {
     const titre = addTitle.value.trim();
@@ -302,18 +254,9 @@ function addWorks() {
       validateButton.disabled = true;
     }
   }
-  addTitle.addEventListener(
-    "input",
-    verifierFormulaire
-  );
-  addImage.addEventListener(
-    "change",
-    verifierFormulaire
-  );
-  addCategory.addEventListener(
-    "change",
-    verifierFormulaire
-  );
+  addTitle.addEventListener("input", verifierFormulaire);
+  addImage.addEventListener("change", verifierFormulaire);
+  addCategory.addEventListener("change", verifierFormulaire);
   verifierFormulaire();
   addImage.addEventListener("change", function () {
     const image = addImage.files[0];
@@ -334,7 +277,6 @@ function addWorks() {
     reader.readAsDataURL(image);
   });
 
-
   addWorkForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
@@ -353,16 +295,13 @@ function addWorks() {
     formData.append("title", titre);
     formData.append("category", categorie);
 
-    const reponseAdd = await fetch(
-      "http://localhost:5678/api/works",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        body: formData
-      }
-    );
+    const reponseAdd = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
 
     if (reponseAdd.ok) {
       const nouveauTravail = await reponseAdd.json();
@@ -374,8 +313,7 @@ function addWorks() {
       genererTravaux(travaux);
 
       // Mise à jour de la galerie dans la modale
-      const galleryModal =
-        document.querySelector(".gallery-modal");
+      const galleryModal = document.querySelector(".gallery-modal");
 
       galleryModal.innerHTML = "";
       genererTravauxModal(travaux);
@@ -400,4 +338,3 @@ function addWorks() {
 }
 
 addWorks();
-
