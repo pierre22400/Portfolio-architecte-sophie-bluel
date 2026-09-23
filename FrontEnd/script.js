@@ -208,6 +208,7 @@ optionVide.value = "";
 optionVide.textContent = "";
 optionVide.selected = true;
 optionVide.disabled = true;
+optionVide.defaultSelected = true;
 
 selectCategorie.appendChild(optionVide);
 for (let i = 0; i < categories.length; i++) {
