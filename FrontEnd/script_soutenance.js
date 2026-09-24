@@ -24,16 +24,12 @@ ORDRE DE PRÉSENTATION :
 // GET /api/works -> JSON -> travaux[]
 // --------------------------------------------------------------------
 
-const reponse = await fetch(
-    "http://localhost:5678/api/works"
-);
+const reponse = await fetch("http://localhost:5678/api/works");
 
 let travaux = await reponse.json();
 
-
 // Conteneur HTML dans lequel seront insérés les projets.
 const mesProjets = document.querySelector(".gallery");
-
 
 // --------------------------------------------------------------------
 // 1B — TRANSFORMER LES DONNÉES EN ÉLÉMENTS DU DOM
@@ -48,26 +44,24 @@ const mesProjets = document.querySelector(".gallery");
 // --------------------------------------------------------------------
 
 function genererTravaux(listeTravaux) {
-    for (let i = 0; i < listeTravaux.length; i++) {
-        const figureProjet = document.createElement("figure");
+  for (let i = 0; i < listeTravaux.length; i++) {
+    const figureProjet = document.createElement("figure");
 
-        const imageProjet = document.createElement("img");
-        imageProjet.src = listeTravaux[i].imageUrl;
+    const imageProjet = document.createElement("img");
+    imageProjet.src = listeTravaux[i].imageUrl;
 
-        const titreProjet = document.createElement("figcaption");
-        titreProjet.innerText = listeTravaux[i].title;
+    const titreProjet = document.createElement("figcaption");
+    titreProjet.innerText = listeTravaux[i].title;
 
-        figureProjet.appendChild(imageProjet);
-        figureProjet.appendChild(titreProjet);
+    figureProjet.appendChild(imageProjet);
+    figureProjet.appendChild(titreProjet);
 
-        mesProjets.appendChild(figureProjet);
-    }
+    mesProjets.appendChild(figureProjet);
+  }
 }
-
 
 // Premier affichage : on affiche tous les travaux récupérés.
 genererTravaux(travaux);
-
 
 // --------------------------------------------------------------------
 // 1C — RÉCUPÉRER LES CATÉGORIES
@@ -76,17 +70,12 @@ genererTravaux(travaux);
 // Les catégories sont elles aussi récupérées depuis l'API.
 // --------------------------------------------------------------------
 
-const reponseCategories = await fetch(
-    "http://localhost:5678/api/categories"
-);
+const reponseCategories = await fetch("http://localhost:5678/api/categories");
 
 const categories = await reponseCategories.json();
 
-
 // Conteneur des boutons "Tous", "Objets", "Appartements", etc.
-const menuCategories =
-    document.querySelector(".menu-categories");
-
+const menuCategories = document.querySelector(".menu-categories");
 
 // --------------------------------------------------------------------
 // 1D — CRÉER LE BOUTON "TOUS"
@@ -99,13 +88,9 @@ const boutonTous = document.createElement("button");
 
 boutonTous.innerText = "Tous";
 
-boutonTous.classList.add(
-    "categorie-button",
-    "categorie-button-selected"
-);
+boutonTous.classList.add("categorie-button", "categorie-button-selected");
 
 menuCategories.appendChild(boutonTous);
-
 
 // --------------------------------------------------------------------
 // 1E — GÉRER VISUELLEMENT LE FILTRE ACTIF
@@ -116,20 +101,14 @@ menuCategories.appendChild(boutonTous);
 // --------------------------------------------------------------------
 
 function selectionnerCategorie(boutonSelectionne) {
-    const boutonsCategories =
-        document.querySelectorAll(".categorie-button");
+  const boutonsCategories = document.querySelectorAll(".categorie-button");
 
-    for (let i = 0; i < boutonsCategories.length; i++) {
-        boutonsCategories[i].classList.remove(
-            "categorie-button-selected"
-        );
-    }
+  for (let i = 0; i < boutonsCategories.length; i++) {
+    boutonsCategories[i].classList.remove("categorie-button-selected");
+  }
 
-    boutonSelectionne.classList.add(
-        "categorie-button-selected"
-    );
+  boutonSelectionne.classList.add("categorie-button-selected");
 }
-
 
 // --------------------------------------------------------------------
 // 1F — FILTRE "TOUS"
@@ -139,17 +118,16 @@ function selectionnerCategorie(boutonSelectionne) {
 // --------------------------------------------------------------------
 
 boutonTous.addEventListener("click", function () {
-    selectionnerCategorie(boutonTous);
+  selectionnerCategorie(boutonTous);
 
-    mesProjets.innerHTML = "";
-    genererTravaux(travaux);
+  mesProjets.innerHTML = "";
+  genererTravaux(travaux);
 });
-
 
 // --------------------------------------------------------------------
 // 1G — CRÉER LES FILTRES ET FILTRER AVEC filter()
 // --------------------------------------------------------------------
-// 
+//
 // Chaque bouton reçoit l'id de sa catégorie dans data-category-id.
 // Au clic :
 //   1. on récupère cet id ;
@@ -161,56 +139,40 @@ boutonTous.addEventListener("click", function () {
 // --------------------------------------------------------------------
 
 function genererCategories(categories) {
-    for (let i = 0; i < categories.length; i++) {
-        const boutonCategorie =
-            document.createElement("button");
+  for (let i = 0; i < categories.length; i++) {
+    const boutonCategorie = document.createElement("button");
 
-        boutonCategorie.innerText =
-            categories[i].name;
+    boutonCategorie.innerText = categories[i].name;
 
-        boutonCategorie.setAttribute(
-            "data-category-id",
-            categories[i].id
-        );
+    boutonCategorie.setAttribute("data-category-id", categories[i].id);
 
-        boutonCategorie.classList.add(
-            "categorie-button"
-        );
+    boutonCategorie.classList.add("categorie-button");
 
-        menuCategories.appendChild(
-            boutonCategorie
-        );
+    menuCategories.appendChild(boutonCategorie);
 
-        boutonCategorie.addEventListener(
-            "click",
-            function () {
-                selectionnerCategorie(this);
+    boutonCategorie.addEventListener("click", function () {
+      selectionnerCategorie(this);
 
-                const categoryId = Number(
-                    this.getAttribute("data-category-id")
-                );
+      const categoryId = Number(this.getAttribute("data-category-id"));
 
-                // SOUTENANCE :
-                // filter() ne modifie pas travaux.
-                // Il crée un nouveau tableau contenant seulement
-                // les travaux de la catégorie sélectionnée.
-                const travauxFiltres =
-                    travaux.filter(function (travail) {
-                        return travail.categoryId === categoryId;
-                    });
+      // SOUTENANCE :
+      // filter() ne modifie pas travaux.
+      // Il crée un nouveau tableau contenant seulement
+      // les travaux de la catégorie sélectionnée.
+      const travauxFiltres = travaux.filter(function (travail) {
+        return travail.categoryId === categoryId;
+      });
 
-                // On vide le DOM avant de reconstruire la galerie.
-                mesProjets.innerHTML = "";
+      // On vide le DOM avant de reconstruire la galerie.
+      mesProjets.innerHTML = "";
 
-                // Même fonction de rendu, mais avec des données différentes.
-                genererTravaux(travauxFiltres);
-            }
-        );
-    }
+      // Même fonction de rendu, mais avec des données différentes.
+      genererTravaux(travauxFiltres);
+    });
+  }
 }
 
 genererCategories(categories);
-
 
 // ====================================================================
 // PARTIE 2 — CONNEXION ET ÉTAT CONNECTÉ / NON CONNECTÉ
@@ -230,25 +192,18 @@ genererCategories(categories);
 // Ici, dans script.js, on lit le token et on adapte l'interface.
 // ====================================================================
 
-
 // --------------------------------------------------------------------
 // 2A — RÉCUPÉRER LES ÉLÉMENTS QUI CHANGENT SELON LA CONNEXION
 // --------------------------------------------------------------------
 
-const authLink =
-    document.querySelector("#auth-link");
+const authLink = document.querySelector("#auth-link");
 
-const editModeBar =
-    document.querySelector("#edit-mode-bar");
+const editModeBar = document.querySelector("#edit-mode-bar");
 
-const boutonModifier =
-    document.querySelector(".bouton-modifier");
-
+const boutonModifier = document.querySelector(".bouton-modifier");
 
 // Le token a été stocké par login.js après une connexion réussie.
-const token =
-    localStorage.getItem("token");
-
+const token = localStorage.getItem("token");
 
 // --------------------------------------------------------------------
 // 2B — UTILISATEUR CONNECTÉ
@@ -266,81 +221,65 @@ const token =
 // --------------------------------------------------------------------
 
 if (token) {
-    authLink.innerText = "logout";
-    authLink.href = "#";
+  authLink.innerText = "logout";
+  authLink.href = "#";
 
-    editModeBar.classList.remove("hidden");
-    boutonModifier.classList.remove("hidden");
+  editModeBar.classList.remove("hidden");
+  boutonModifier.classList.remove("hidden");
 
-    // En mode édition, les filtres ne sont pas affichés.
-    menuCategories.classList.add("hidden");
+  // En mode édition, les filtres ne sont pas affichés.
+  menuCategories.classList.add("hidden");
 
+  // Déconnexion :
+  // on supprime le token puis on recharge l'accueil.
+  authLink.addEventListener("click", function (event) {
+    event.preventDefault();
 
-    // Déconnexion :
-    // on supprime le token puis on recharge l'accueil.
-    authLink.addEventListener(
-        "click",
-        function (event) {
-            event.preventDefault();
+    localStorage.removeItem("token");
 
-            localStorage.removeItem("token");
+    window.location.href = "index.html";
+  });
 
-            window.location.href = "index.html";
-        }
-    );
-
-
-    // --------------------------------------------------------------------
-    // 2C — UTILISATEUR NON CONNECTÉ
-    // --------------------------------------------------------------------
-    // Interface publique :
-    //   - lien "login"
-    //   - pas de bandeau édition
-    //   - pas de bouton modifier
-    //   - filtres visibles
-    // --------------------------------------------------------------------
-
+  // --------------------------------------------------------------------
+  // 2C — UTILISATEUR NON CONNECTÉ
+  // --------------------------------------------------------------------
+  // Interface publique :
+  //   - lien "login"
+  //   - pas de bandeau édition
+  //   - pas de bouton modifier
+  //   - filtres visibles
+  // --------------------------------------------------------------------
 } else {
-    authLink.innerText = "login";
-    authLink.href = "login.html";
+  authLink.innerText = "login";
+  authLink.href = "login.html";
 
-    editModeBar.classList.add("hidden");
-    boutonModifier.classList.add("hidden");
+  editModeBar.classList.add("hidden");
+  boutonModifier.classList.add("hidden");
 
-    menuCategories.classList.remove("hidden");
+  menuCategories.classList.remove("hidden");
 }
-
 
 // ====================================================================
 // PARTIE 3 — MODALE : AJOUTER ET SUPPRIMER DES TRAVAUX
 // ====================================================================
 
-
 // --------------------------------------------------------------------
 // 3A — REPÈRES DOM DE LA MODALE
 // --------------------------------------------------------------------
 
-const openModalButton =
-    document.querySelector("#open-modal");
+const openModalButton = document.querySelector("#open-modal");
 
-const modal =
-    document.querySelector("#modal");
+const modal = document.querySelector("#modal");
 
-const closeModalButton =
-    document.querySelector("#close-modal");
+const closeModalButton = document.querySelector("#close-modal");
 
-const galleryView =
-    document.querySelector("#modal-gallery-view");
+const galleryView = document.querySelector("#modal-gallery-view");
 
-const addView =
-    document.querySelector("#modal-add-view");
+const addView = document.querySelector("#modal-add-view");
 
-const boutonAjouter =
-    document.querySelector("#add-photo");
+const boutonAjouter = document.querySelector("#add-photo");
 
-const boutonBack =
-    document.querySelector("#back-gallery");
-
+const boutonBack = document.querySelector("#back-gallery");
 
 // --------------------------------------------------------------------
 // 3B — OUVRIR ET FERMER LA MODALE
@@ -351,66 +290,41 @@ const boutonBack =
 // --------------------------------------------------------------------
 
 function openModal() {
-    modal.classList.add("active");
-    modal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
 
-    const galleryModal =
-        document.querySelector(".gallery-modal");
+  const galleryModal = document.querySelector(".gallery-modal");
 
-    galleryModal.innerHTML = "";
+  galleryModal.innerHTML = "";
 
-    genererTravauxModal(travaux);
+  genererTravauxModal(travaux);
 }
-
 
 function closeModal() {
-    modal.classList.remove("active");
+  modal.classList.remove("active");
 
-    modal.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+  modal.setAttribute("aria-hidden", "true");
 }
 
-
 // Clic sur "modifier".
-openModalButton.addEventListener(
-    "click",
-    openModal
-);
-
+openModalButton.addEventListener("click", openModal);
 
 // Clic sur la croix.
-closeModalButton.addEventListener(
-    "click",
-    closeModal
-);
-
+closeModalButton.addEventListener("click", closeModal);
 
 // Clic sur l'arrière-plan grisé.
-modal.addEventListener(
-    "click",
-    function (event) {
-        if (event.target === modal) {
-            closeModal();
-        }
-    }
-);
-
+modal.addEventListener("click", function (event) {
+  if (event.target === modal) {
+    closeModal();
+  }
+});
 
 // Touche Échap.
-window.addEventListener(
-    "keydown",
-    function (event) {
-        if (event.key === "Escape") {
-            closeModal();
-        }
-    }
-);
-
+window.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closeModal();
+  }
+});
 
 // --------------------------------------------------------------------
 // 3C — PASSER ENTRE LES DEUX VUES DE LA MODALE
@@ -422,23 +336,15 @@ window.addEventListener(
 // On masque simplement une vue et on affiche l'autre.
 // --------------------------------------------------------------------
 
-boutonAjouter.addEventListener(
-    "click",
-    function () {
-        addView.classList.remove("hidden");
-        galleryView.classList.add("hidden");
-    }
-);
+boutonAjouter.addEventListener("click", function () {
+  addView.classList.remove("hidden");
+  galleryView.classList.add("hidden");
+});
 
-
-boutonBack.addEventListener(
-    "click",
-    function () {
-        addView.classList.add("hidden");
-        galleryView.classList.remove("hidden");
-    }
-);
-
+boutonBack.addEventListener("click", function () {
+  addView.classList.add("hidden");
+  galleryView.classList.remove("hidden");
+});
 
 // --------------------------------------------------------------------
 // 3D — REMPLIR LE SELECT DES CATÉGORIES
@@ -449,16 +355,13 @@ boutonBack.addEventListener(
 //   - le select du formulaire.
 // --------------------------------------------------------------------
 
-const selectCategorie =
-    document.querySelector("#category");
+const selectCategorie = document.querySelector("#category");
 
 selectCategorie.innerHTML = "";
 
-
 // Option vide par défaut :
 // elle oblige l'utilisateur à choisir réellement une catégorie.
-const optionVide =
-    document.createElement("option");
+const optionVide = document.createElement("option");
 
 optionVide.value = "";
 optionVide.textContent = "";
@@ -468,23 +371,16 @@ optionVide.defaultSelected = true;
 
 selectCategorie.appendChild(optionVide);
 
-
 // Création dynamique des autres options.
 for (let i = 0; i < categories.length; i++) {
-    const optionCategorie =
-        document.createElement("option");
+  const optionCategorie = document.createElement("option");
 
-    optionCategorie.value =
-        categories[i].id;
+  optionCategorie.value = categories[i].id;
 
-    optionCategorie.textContent =
-        categories[i].name;
+  optionCategorie.textContent = categories[i].name;
 
-    selectCategorie.appendChild(
-        optionCategorie
-    );
+  selectCategorie.appendChild(optionCategorie);
 }
-
 
 // --------------------------------------------------------------------
 // 3E — AJOUTER UN NOUVEAU TRAVAIL
@@ -499,279 +395,194 @@ for (let i = 0; i < categories.length; i++) {
 // --------------------------------------------------------------------
 
 function addWorks() {
-    const addWorkForm =
-        document.querySelector("#add-work-form");
+  const addWorkForm = document.querySelector("#add-work-form");
 
-    const addTitle =
-        document.querySelector("#title");
+  const addTitle = document.querySelector("#title");
 
-    const addImage =
-        document.querySelector("#image");
+  const addImage = document.querySelector("#image");
 
-    const addCategory =
-        document.querySelector("#category");
+  const addCategory = document.querySelector("#category");
 
-    const validateButton =
-        document.querySelector("#validate-work");
+  const validateButton = document.querySelector("#validate-work");
 
-    const imagePreview =
-        document.querySelector("#image-preview");
+  const imagePreview = document.querySelector("#image-preview");
 
-    const uploadPlaceholder =
-        document.querySelector("#upload-placeholder");
+  const uploadPlaceholder = document.querySelector("#upload-placeholder");
 
+  // --------------------------------------------------------------
+  // 3E.1 — VALIDER LE FORMULAIRE EN TEMPS RÉEL
+  // --------------------------------------------------------------
+  // Le bouton reste désactivé et gris tant qu'il manque :
+  //   - le titre
+  //   - l'image
+  //   - la catégorie
+  //
+  // Quand les trois valeurs existent, disabled devient false
+  // et le CSS affiche le bouton en vert.
+  // --------------------------------------------------------------
 
-    // --------------------------------------------------------------
-    // 3E.1 — VALIDER LE FORMULAIRE EN TEMPS RÉEL
-    // --------------------------------------------------------------
-    // Le bouton reste désactivé et gris tant qu'il manque :
-    //   - le titre
-    //   - l'image
-    //   - la catégorie
-    //
-    // Quand les trois valeurs existent, disabled devient false
-    // et le CSS affiche le bouton en vert.
-    // --------------------------------------------------------------
+  function verifierFormulaire() {
+    const titre = addTitle.value.trim();
 
-    function verifierFormulaire() {
-        const titre =
-            addTitle.value.trim();
+    const image = addImage.files[0];
 
-        const image =
-            addImage.files[0];
+    const categorie = addCategory.value;
 
-        const categorie =
-            addCategory.value;
+    if (titre && image && categorie) {
+      validateButton.disabled = false;
+    } else {
+      validateButton.disabled = true;
+    }
+  }
 
-        if (titre && image && categorie) {
-            validateButton.disabled = false;
-        } else {
-            validateButton.disabled = true;
-        }
+  addTitle.addEventListener("input", verifierFormulaire);
+
+  addImage.addEventListener("change", verifierFormulaire);
+
+  addCategory.addEventListener("change", verifierFormulaire);
+
+  verifierFormulaire();
+
+  // --------------------------------------------------------------
+  // 3E.2 — PRÉVISUALISER L'IMAGE
+  // --------------------------------------------------------------
+  // FileReader lit localement le fichier choisi.
+  // Il n'y a encore aucun envoi vers l'API à ce stade.
+  // --------------------------------------------------------------
+
+  addImage.addEventListener("change", function () {
+    const image = addImage.files[0];
+
+    if (!image) {
+      return;
     }
 
+    const reader = new FileReader();
 
-    addTitle.addEventListener(
-        "input",
-        verifierFormulaire
-    );
+    reader.addEventListener("load", function () {
+      imagePreview.src = reader.result;
 
-    addImage.addEventListener(
-        "change",
-        verifierFormulaire
-    );
+      imagePreview.classList.remove("hidden");
 
-    addCategory.addEventListener(
-        "change",
-        verifierFormulaire
-    );
+      uploadPlaceholder.classList.add("hidden");
+    });
 
-    verifierFormulaire();
+    reader.readAsDataURL(image);
+  });
 
+  // --------------------------------------------------------------
+  // 3E.3 — SOUMETTRE LE FORMULAIRE
+  // --------------------------------------------------------------
+  // preventDefault() empêche le rechargement HTML traditionnel.
+  // --------------------------------------------------------------
 
-    // --------------------------------------------------------------
-    // 3E.2 — PRÉVISUALISER L'IMAGE
-    // --------------------------------------------------------------
-    // FileReader lit localement le fichier choisi.
-    // Il n'y a encore aucun envoi vers l'API à ce stade.
-    // --------------------------------------------------------------
+  addWorkForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-    addImage.addEventListener(
-        "change",
-        function () {
-            const image =
-                addImage.files[0];
+    const titre = addTitle.value;
 
-            if (!image) {
-                return;
-            }
+    // files[0] est un objet File.
+    const image = addImage.files[0];
 
-            const reader =
-                new FileReader();
+    const categorie = addCategory.value;
 
-            reader.addEventListener(
-                "load",
-                function () {
-                    imagePreview.src =
-                        reader.result;
+    if (!titre || !image || !categorie) {
+      alert("Veuillez remplir tous les champs.");
 
-                    imagePreview.classList.remove(
-                        "hidden"
-                    );
+      return;
+    }
 
-                    uploadPlaceholder.classList.add(
-                        "hidden"
-                    );
-                }
-            );
+    // ----------------------------------------------------------
+    // 3E.4 — FORMDATA
+    // ----------------------------------------------------------
+    //
+    // Login :
+    //   JSON.stringify(...)
+    //
+    // Ajout d'un travail :
+    //   FormData, car il faut envoyer un fichier + des textes.
+    //
+    // On NE fixe PAS Content-Type manuellement :
+    // le navigateur construit lui-même le multipart/form-data.
+    // ----------------------------------------------------------
 
-            reader.readAsDataURL(image);
-        }
-    );
+    const formData = new FormData();
 
+    formData.append("image", image);
 
-    // --------------------------------------------------------------
-    // 3E.3 — SOUMETTRE LE FORMULAIRE
-    // --------------------------------------------------------------
-    // preventDefault() empêche le rechargement HTML traditionnel.
-    // --------------------------------------------------------------
+    formData.append("title", titre);
 
-    addWorkForm.addEventListener(
-        "submit",
-        async function (event) {
-            event.preventDefault();
+    formData.append("category", categorie);
 
-            const titre =
-                addTitle.value;
+    // ----------------------------------------------------------
+    // 3E.5 — POST /api/works + TOKEN
+    // ----------------------------------------------------------
+    // Route protégée.
+    // Le token stocké après le login est envoyé dans Authorization.
+    // ----------------------------------------------------------
 
-            // files[0] est un objet File.
-            const image =
-                addImage.files[0];
+    const reponseAdd = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
 
-            const categorie =
-                addCategory.value;
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
 
+      body: formData,
+    });
 
-            if (!titre || !image || !categorie) {
-                alert(
-                    "Veuillez remplir tous les champs."
-                );
+    // ----------------------------------------------------------
+    // 3E.6 — SI L'API CONFIRME L'AJOUT
+    // ----------------------------------------------------------
+    // Chaîne à expliquer :
+    //
+    // API confirme
+    // -> nouveauTravail
+    // -> travaux.push()
+    // -> galerie principale régénérée
+    // -> galerie modale régénérée
+    // -> formulaire reset
+    // -> retour à "Galerie photo"
+    //
+    // Aucun F5 n'est nécessaire.
+    // ----------------------------------------------------------
 
-                return;
-            }
+    if (reponseAdd.ok) {
+      const nouveauTravail = await reponseAdd.json();
 
+      travaux.push(nouveauTravail);
 
-            // ----------------------------------------------------------
-            // 3E.4 — FORMDATA
-            // ----------------------------------------------------------
-            // 
-            // Login :
-            //   JSON.stringify(...)
-            //
-            // Ajout d'un travail :
-            //   FormData, car il faut envoyer un fichier + des textes.
-            //
-            // On NE fixe PAS Content-Type manuellement :
-            // le navigateur construit lui-même le multipart/form-data.
-            // ----------------------------------------------------------
+      mesProjets.innerHTML = "";
 
-            const formData =
-                new FormData();
+      genererTravaux(travaux);
 
-            formData.append(
-                "image",
-                image
-            );
+      const galleryModal = document.querySelector(".gallery-modal");
 
-            formData.append(
-                "title",
-                titre
-            );
+      galleryModal.innerHTML = "";
 
-            formData.append(
-                "category",
-                categorie
-            );
+      genererTravauxModal(travaux);
 
+      addWorkForm.reset();
 
-            // ----------------------------------------------------------
-            // 3E.5 — POST /api/works + TOKEN
-            // ----------------------------------------------------------
-            // Route protégée.
-            // Le token stocké après le login est envoyé dans Authorization.
-            // ----------------------------------------------------------
+      imagePreview.src = "";
 
-            const reponseAdd =
-                await fetch(
-                    "http://localhost:5678/api/works",
-                    {
-                        method: "POST",
+      imagePreview.classList.add("hidden");
 
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`
-                        },
+      uploadPlaceholder.classList.remove("hidden");
 
-                        body: formData
-                    }
-                );
+      verifierFormulaire();
 
+      addView.classList.add("hidden");
 
-            // ----------------------------------------------------------
-            // 3E.6 — SI L'API CONFIRME L'AJOUT
-            // ----------------------------------------------------------
-            // Chaîne à expliquer :
-            //
-            // API confirme
-            // -> nouveauTravail
-            // -> travaux.push()
-            // -> galerie principale régénérée
-            // -> galerie modale régénérée
-            // -> formulaire reset
-            // -> retour à "Galerie photo"
-            //
-            // Aucun F5 n'est nécessaire.
-            // ----------------------------------------------------------
+      galleryView.classList.remove("hidden");
 
-            if (reponseAdd.ok) {
-                const nouveauTravail =
-                    await reponseAdd.json();
-
-                travaux.push(
-                    nouveauTravail
-                );
-
-                mesProjets.innerHTML = "";
-
-                genererTravaux(
-                    travaux
-                );
-
-                const galleryModal =
-                    document.querySelector(
-                        ".gallery-modal"
-                    );
-
-                galleryModal.innerHTML = "";
-
-                genererTravauxModal(
-                    travaux
-                );
-
-                addWorkForm.reset();
-
-                imagePreview.src = "";
-
-                imagePreview.classList.add(
-                    "hidden"
-                );
-
-                uploadPlaceholder.classList.remove(
-                    "hidden"
-                );
-
-                verifierFormulaire();
-
-                addView.classList.add(
-                    "hidden"
-                );
-
-                galleryView.classList.remove(
-                    "hidden"
-                );
-
-                alert(
-                    "Votre ajout a bien été pris en compte."
-                );
-            }
-        }
-    );
+      alert("Votre ajout a bien été pris en compte.");
+    }
+  });
 }
-
 
 // Activation de toute la logique du formulaire d'ajout.
 addWorks();
-
 
 // --------------------------------------------------------------------
 // 3F — AFFICHER LA GALERIE DE LA MODALE ET SUPPRIMER UN TRAVAIL
@@ -787,102 +598,63 @@ addWorks();
 // --------------------------------------------------------------------
 
 function genererTravauxModal(listeTravaux) {
-    const galleryModal =
-        document.querySelector(".gallery-modal");
+  const galleryModal = document.querySelector(".gallery-modal");
 
-    for (let i = 0; i < listeTravaux.length; i++) {
-        const figureProjet =
-            document.createElement("figure");
+  for (let i = 0; i < listeTravaux.length; i++) {
+    const figureProjet = document.createElement("figure");
 
-        const imageProjet =
-            document.createElement("img");
+    const imageProjet = document.createElement("img");
 
-        imageProjet.src =
-            listeTravaux[i].imageUrl;
+    imageProjet.src = listeTravaux[i].imageUrl;
 
+    const boutonSupprimer = document.createElement("button");
 
-        const boutonSupprimer =
-            document.createElement("button");
+    boutonSupprimer.classList.add("delete-photo");
 
-        boutonSupprimer.classList.add(
-            "delete-photo"
-        );
+    boutonSupprimer.type = "button";
 
-        boutonSupprimer.type =
-            "button";
+    boutonSupprimer.dataset.id = listeTravaux[i].id;
 
-        boutonSupprimer.dataset.id =
-            listeTravaux[i].id;
+    const iconePoubelle = document.createElement("i");
 
+    iconePoubelle.classList.add("fa-solid", "fa-trash-can");
 
-        const iconePoubelle =
-            document.createElement("i");
+    boutonSupprimer.appendChild(iconePoubelle);
 
-        iconePoubelle.classList.add(
-            "fa-solid",
-            "fa-trash-can"
-        );
+    boutonSupprimer.addEventListener("click", async function (event) {
+      const id = event.currentTarget.dataset.id;
 
-        boutonSupprimer.appendChild(
-            iconePoubelle
-        );
+      const reponseSuppression = await fetch(
+        `http://localhost:5678/api/works/${id}`,
+        {
+          method: "DELETE",
 
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-        boutonSupprimer.addEventListener(
-            "click",
-            async function (event) {
-                const id =
-                    event.currentTarget.dataset.id;
+      if (reponseSuppression.ok) {
+        figureProjet.remove();
 
+        travaux = travaux.filter(function (travail) {
+          return travail.id !== Number(id);
+        });
 
-                const reponseSuppression =
-                    await fetch(
-                        `http://localhost:5678/api/works/${id}`,
-                        {
-                            method: "DELETE",
+        mesProjets.innerHTML = "";
 
-                            headers: {
-                                Authorization:
-                                    `Bearer ${token}`
-                            }
-                        }
-                    );
+        genererTravaux(travaux);
+      }
+    });
 
+    figureProjet.appendChild(imageProjet);
 
-                if (reponseSuppression.ok) {
-                    figureProjet.remove();
+    figureProjet.appendChild(boutonSupprimer);
 
-                    travaux =
-                        travaux.filter(
-                            function (travail) {
-                                return travail.id !== Number(id);
-                            }
-                        );
-
-                    mesProjets.innerHTML = "";
-
-                    genererTravaux(
-                        travaux
-                    );
-                }
-            }
-        );
-
-
-        figureProjet.appendChild(
-            imageProjet
-        );
-
-        figureProjet.appendChild(
-            boutonSupprimer
-        );
-
-        galleryModal.appendChild(
-            figureProjet
-        );
-    }
+    galleryModal.appendChild(figureProjet);
+  }
 }
-
 
 /*
 ======================================================================
